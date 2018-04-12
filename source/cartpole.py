@@ -1,5 +1,6 @@
 import numpy as np
 import gym
+import random
 import time
 
 env = gym.make('CartPole-v0')
@@ -45,6 +46,34 @@ def discrete_indexes(state):
     state = (car_velocity, pole_angle, pole_velocity)
     return state
 
+# (1./(episode + 1)) this decrease the chance of choosing a greedly action based on the num_episode
+# we choose more greedly at the first ones
+# here we need to give a chance to choose other actions because, if not, we always will use the first action
+# that the reward is updated
+def choose_action(state, episode):
+
+    #reward_0 = Q[state[0], state[1], state[2], 0]
+    #reward_1 = Q[state[0], state[1], state[2], 1]
+
+    #print("reward 0: ", reward_0)
+    #print("reward 1: ", reward_1)
+
+    action = np.argmax(Q[state[0], state[1], state[2], :])
+    if action == 0:
+        if random.randint(1, 10) > 8:
+            action = 1
+    else:
+        if random.randint(1, 10) > 8:
+            action = 0
+
+    #argmax(reward_0, reward_1)
+    #print(action)
+    #print(Q[state[0], state[1], state[2], :])
+
+    #print(Q[state[0], state[1], state[2], 0])
+    #print(Q[state[0], state[1], state[2], 1])
+    return action
+
 
 for i in range(num_episodes):
     state = env.reset()
@@ -57,9 +86,11 @@ for i in range(num_episodes):
     total_reward = 0
     done = 0
     for j in range(200):
-        env.render()
+        #env.render()
 
-        action = np.argmax(Q[state[0], state[1], state[2], :])
+
+        action = choose_action(state, i)
+        #action = np.argmax(Q[state[0], state[1], state[2], :])
         #print(action)
         #action = env.action_space.sample()
         new_state, reward, done, info = env.step(action)
@@ -70,7 +101,25 @@ for i in range(num_episodes):
         state = new_state
 
         if (done == True):
+            #print(total_reward)
             break
-            print(total_reward)
 
         reward_list.append(total_reward)
+
+#print(max(reward_list))
+
+for i in range(10):
+    total_reward = 0
+    state = env.reset()
+
+    state = discrete_indexes(state)
+    for j in range(200):
+        env.render()
+        action = np.argmax(Q[state[0], state[1], state[2], :])
+        new_state, reward, done, info = env.step(action)
+        new_state = discrete_indexes(new_state)
+        total_reward = total_reward + reward
+        state = new_state
+        if (done == True):
+            print(total_reward)
+            break

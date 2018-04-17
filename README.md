@@ -8,9 +8,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-To compile you need to have [**python2**](https://www.python.org/) (or equivalent) on your machine. 
+To compile you need to have [**python2**](https://www.python.org/) (_or equivalent_) on your machine. 
 
-You will also need the [**OpenAI Gym**](https://github.com/openai/gym) toolkit to run the enviroment (CartPole-v0)
+You will also need the [**OpenAI Gym**](https://github.com/openai/gym) toolkit to run the environment (_CartPole-v0_)
 
 ## Testing
 

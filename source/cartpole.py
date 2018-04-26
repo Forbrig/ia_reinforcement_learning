@@ -10,11 +10,11 @@ env.reset()
 Q = np.zeros([40, 400, 40, 2]) # q-table, where we store the states, actions and rewars
 learning_rate = 0.8
 y = 0.95
-num_train_episodes = 50000 # with how many episodes our agent will train
+num_train_episodes = 1000 # with how many episodes our agent will train
 num_test_episodes = 100 # how many episodes our agent will be tested
 render = False # render our test (will slow the respose a lot)
 slow_render = True # slows 0.2 secs each step the render of the test (don't work if render = False)
-use_saved_qtable = False
+use_saved_qtable = True
 
 # Q = [40][400][40][2]
 # [40] = velocities from -2 to 2 (goes from -inf to inf)
@@ -79,6 +79,7 @@ def choose_action(state, episode):
 
 # train our agent with n episodes
 def train_agent(num_episodes):
+    print("Training new agent from scratch.")
     for i in range(num_episodes):
         state = env.reset()
         state = discrete_indexes(state)

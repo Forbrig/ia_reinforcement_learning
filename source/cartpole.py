@@ -12,9 +12,11 @@ learning_rate = 0.8
 y = 0.95
 num_train_episodes = 1000 # with how many episodes our agent will train
 num_test_episodes = 100 # how many episodes our agent will be tested
-render = False # render our test (will slow the respose a lot)
-slow_render = True # slows 0.2 secs each step the render of the test (don't work if render = False)
-use_saved_qtable = True
+render = True # render our test (will slow the respose a lot)
+slow_render = False # slows 0.2 secs each step the render of the test (don't work if render = False)
+use_saved_qtable = False
+print_rewards = True #print reward obtained after each test in an episode
+
 
 # Q = [40][400][40][2]
 # [40] = velocities from -2 to 2 (goes from -inf to inf)
@@ -58,6 +60,7 @@ def load_qtable():
         current_score, qtable = pickle.load(file)
     except:
         print("Can't open the stored qtable. Maybe it's missing.")
+
         return 0, 0
         #exit(0)
 
@@ -115,7 +118,8 @@ def test_agent(num_tests, render, slow_render):
             total_reward = total_reward + reward
             state = new_state
             if (done == True):
-                #print(total_reward)
+                if print_rewards == True:
+                    print(total_reward)
                 break
         reward_list.append(total_reward)
     return sum(reward_list)/float(len(reward_list))
@@ -126,6 +130,9 @@ final_score = 0
 
 if use_saved_qtable == True: # note that the test scores may difer
     saved_score, Q = load_qtable()
+    if Q == 0: # if we couldnt open the qtable to test
+        print 'Exiting.'
+        exit(0)
     print 'Using stored Qtable. Note that the test score may differ from the saved score (it will not be updated).'
 else:
     saved_score, _ = load_qtable()

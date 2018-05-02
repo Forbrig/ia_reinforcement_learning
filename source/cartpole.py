@@ -10,7 +10,7 @@ env.reset()
 Q = np.zeros([40, 400, 40, 2]) # q-table, where we store the states, actions and rewars
 learning_rate = 0.8
 y = 0.95
-num_train_episodes = 1000 # with how many episodes our agent will train
+num_train_episodes = 3000 # with how many episodes our agent will train
 num_test_episodes = 100 # how many episodes our agent will be tested
 render = True # render our test (will slow the respose a lot)
 slow_render = False # slows 0.2 secs each step the render of the test (don't work if render = False)
@@ -130,7 +130,7 @@ final_score = 0
 
 if use_saved_qtable == True: # note that the test scores may difer
     saved_score, Q = load_qtable()
-    if Q == 0: # if we couldnt open the qtable to test
+    if not np.any(Q): # if we couldnt open the qtable to test
         print 'Exiting.'
         exit(0)
     print 'Using stored Qtable. Note that the test score may differ from the saved score (it will not be updated).'
